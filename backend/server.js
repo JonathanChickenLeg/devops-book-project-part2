@@ -1,9 +1,10 @@
 import express from "express";
 import cors from "cors";
 
-import userRoutes from "./routes/userRoutes.js";
-import bookRoutes from "./routes/bookRoutes.js";
-import deleteRoutes from "./routes/deleteRoutes.js";
+import deleteRoutes from "./utils/williamUtils.js";
+import userRoutes from "./utils/jonathanUtils.js";
+import bookRoutes from "./utils/bryanUtils.js";
+
 
 const app = express();
 app.use(cors());
