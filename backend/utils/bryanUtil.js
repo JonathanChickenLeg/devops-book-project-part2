@@ -1,5 +1,5 @@
 import express from "express";
-import { readData, writeData } from "../utils/data.js";
+import { readData, writeData } from "../../frontend/utils/data.js";
 
 const router = express.Router();
 
