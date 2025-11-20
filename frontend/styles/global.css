@@ -78,6 +78,20 @@ button:hover {
   border: 1px solid #ccc;
 }
 
+#register-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+#register-section input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
 #library-section {
   animation: fadeIn 0.3s ease-in-out;
 }
