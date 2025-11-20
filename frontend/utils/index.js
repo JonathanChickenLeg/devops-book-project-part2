@@ -243,7 +243,7 @@ window.editBook = (index) => {
   bookContentInput.value = book.content;
 
   bookModal.classList.remove("hidden");
-};
+}; 
 
 
 // -----------------

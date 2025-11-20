@@ -9,6 +9,11 @@
       "username": "test",
       "password": "test",
       "role": "user"
+    },
+    {
+      "username": "Wadmin",
+      "password": "p123",
+      "role": "user"
     }
   ],
   "books": [
