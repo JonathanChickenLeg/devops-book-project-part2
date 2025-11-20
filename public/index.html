@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Library Book System</title>
-  <link rel="stylesheet" href="styles/global.css" />
+  <link rel="stylesheet" href="./styles/styles.css"/>
 </head>
 
 <body>
@@ -23,21 +23,21 @@
         <h2>Login</h2>
         <input type="text" id="lgn-username" placeholder="Enter your username" />
         <input type="password" id="lgn-password" placeholder="Enter your password" />
-        <button id="login-btn">Login</button>
-        <button id="register-nav" class="link">Register</button>
+        <button id="login-btn" onclick="loginUser()">Login</button>
+        <button id="register-nav" class="link" onclick="navRegister()">Register</button>
       </div>
 
       <div id="register-section" class="hidden">
         <h2>Register</h2>
         <input type="text" id="reg-username" placeholder="Enter your username" />
         <input type="password" id="reg-password" placeholder="Enter your password" />
-        <button id="register-btn">Register</button>
-        <button id="login-nav" class="link">Back</button>
+        <button id="register-btn" onclick="addUser()">Register</button>
+        <button id="login-nav" class="link" onclick="navLogin()">Back</button>
       </div>
 
       <div id="library-section" class="hidden">
         <div class="actions">
-          <button id="add-book-btn">➕ Add Book</button>
+          <button id="add-book-btn">Add Book</button>
         </div>
         <table id="book-table">
           <thead>
@@ -76,7 +76,10 @@
     </div>
   </div>
 
-  <script src="utils/index.js"></script>
+  <script src="js/bryan.js"></script>
+  <script src="js/jonathan.js"></script>
+  <script src="js/william.js"></script>
+  <script src="js/login.js"></script>
 </body>
 
 </html>

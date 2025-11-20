@@ -10,6 +10,7 @@
       "password": "test",
       "role": "user"
     },
+<<<<<<< HEAD:backend/data.json
     {
       "username": "Wadmin",
       "password": "p123",
@@ -28,6 +29,12 @@
       "title": "bryan",
       "author": "bryan",
       "content": "bryannnnn"
+=======
+    {
+      "username": "minso",
+      "password": "minso",
+      "role": "user"
+>>>>>>> 475aab084df50b6690e68ab16c7cc9bb0a1f5f1f:utils/users.json
     }
   ]
 }
