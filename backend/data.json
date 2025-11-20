@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "administrator",
+      "password": "administrator",
+      "role": "admin"
+    },
+    {
+      "username": "test",
+      "password": "test",
+      "role": "user"
+    }
+  ],
+  "books": [
+    {
+      "user": "brya",
+      "title": "bryan",
+      "author": "bryan",
+      "content": "bryannnnn"
+    }
+  ]
+}

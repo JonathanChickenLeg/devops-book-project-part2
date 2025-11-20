@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Book System</title>
+  <link rel="stylesheet" href="styles/global.css" />
+</head>
+
+<body>
+  <div class="app-container">
+    <header>
+      <h1>Library System</h1>
+      <div id="user-section">
+        <span id="current-user"></span>
+        <button id="logout-btn" class="hidden">Logout</button>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div id="login-section">
+        <h2>Login</h2>
+        <input type="text" id="lgn-username" placeholder="Enter your username" />
+        <input type="password" id="lgn-password" placeholder="Enter your password" />
+        <button id="login-btn">Login</button>
+        <button id="register-nav" class="link">Register</button>
+      </div>
+
+      <div id="register-section" class="hidden">
+        <h2>Register</h2>
+        <input type="text" id="reg-username" placeholder="Enter your username" />
+        <input type="password" id="reg-password" placeholder="Enter your password" />
+        <button id="register-btn">Register</button>
+        <button id="login-nav" class="link">Back</button>
+      </div>
+
+      <div id="library-section" class="hidden">
+        <div class="actions">
+          <button id="add-book-btn">➕ Add Book</button>
+        </div>
+        <table id="book-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th id="action-column">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="book-list"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal for adding/editing books -->
+  <div id="book-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="modal-title">Add Book</h2>
+      <input type="text" id="book-title" placeholder="Book Title" />
+      <input type="text" id="book-author" placeholder="Author" />
+      <textarea id="book-content" placeholder="Book Content"></textarea>
+      <div class="modal-actions">
+        <button id="save-book-btn">Save</button>
+        <button id="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for reading books -->
+  <div id="read-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="read-title"></h2>
+      <p id="read-content"></p>
+      <button id="close-read-btn">Close</button>
+    </div>
+  </div>
+
+  <script src="utils/index.js"></script>
+</body>
+
+</html>
