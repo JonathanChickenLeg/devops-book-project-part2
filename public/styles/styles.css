@@ -108,6 +108,22 @@ td {
   padding: 10px;
   text-align: left;
 }
+/* Table cell actions */
+td .btn {
+  margin-right: 8px; /* space between buttons */
+  margin-left: 0
+}
+
+td .btn:last-child {
+  margin-right: 0; /* no margin for the last button */
+}
+
+/* Optional: make buttons smaller and consistent in table cells */
+td .btn.small {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
 
 th {
   background: #0077ff;

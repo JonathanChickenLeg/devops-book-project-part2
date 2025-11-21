@@ -1,45 +1,46 @@
 {
   "books": [
     {
-      "user": "administrator",
-      "title": "bryan",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-
-        {
-      "user": "administrator",
-      "title": "bryan",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-
-        {
-      "user": "administrator",
-      "title": "bryan",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-
-        {
-      "user": "administrator",
-      "title": "bryan",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-
-        {
-      "user": "administrator",
-      "title": "bryan",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-
-        {
       "user": "brya",
-      "title": "bryan",
+      "title": "bryan223133131",
       "author": "bryan",
       "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "Book to Delete",
+      "author": "Author to Delete",
+      "content": "This book will be deleted in tests."
+    },
+    {
+      "user": "minso",
+      "title": "Minso's Book",
+      "author": "Minso",
+      "content": "Content of Minso's book."
+    },
+    {
+      "user": "test",
+      "title": "Test Book",
+      "author": "Test Author",
+      "content": "This is a test book."
+    },
+    {
+      "user": "new",
+      "title": "New User's Book",
+      "author": "New User",
+      "content": "Content for the new user's book."
+    },
+    {
+      "user": "Wadmin",
+      "title": "William's Book 3",
+      "author": "William Admin",
+      "content": "Content of William's book."
+    },
+    {
+      "user": "Wadmin",
+      "title": "delete me i dont care wwe ww",
+      "author": "William",
+      "content": "wewe"
     }
   ]
 }

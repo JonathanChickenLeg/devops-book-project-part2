@@ -23,10 +23,10 @@ function registerDeleteAttempt() {
   const now = Date.now();
   deleteTimestamps.push(now);
 
-  // remove timestamps older than five seconds
-  deleteTimestamps = deleteTimestamps.filter(t => now - t <= 5000);
+  // remove timestamps older than 10 seconds
+  deleteTimestamps = deleteTimestamps.filter(t => now - t <= 10000);
 
-  // activate lock if more than five attempts occurred within five seconds
+  // activate lock if more than five attempts occurred within 10 seconds
   if (deleteTimestamps.length >= 5 && !locked) {
     locked = true;
 
@@ -124,4 +124,8 @@ async function deleteBook(req, res) {
   }
 }
 
-module.exports = { performDelete, spamGuardActive, deleteBook };
+module.exports = {
+    performDelete, 
+    spamGuardActive, 
+    deleteBook
+};
