@@ -18,12 +18,12 @@ app.post('/add-user', addUser);
 // const { addBook } = require('./utils/bryanUtil')
 // app.get('/add-book', addBook)
 
-// const { deleteBook } = require('./utils/williamUtil')
-// app.get('/delete-book', deleteBook)
+const { deleteBook } = require('./utils/williamUtil')
+app.delete('/delete-book', deleteBook)
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/public/" + startPage);
-})
+});
 
 server = app.listen(PORT, function () {
     const address = server.address();
