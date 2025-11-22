@@ -2,15 +2,9 @@
   "books": [
     {
       "user": "brya",
-      "title": "bryan223133131",
-      "author": "bryan",
-      "content": "bryannnnn"
-    },
-    {
-      "user": "administrator",
-      "title": "Book to Delete",
-      "author": "Author to Delete",
-      "content": "This book will be deleted in tests."
+      "title": "Slim Shady 2.0",
+      "author": "MnM",
+      "content": "bryannnnn starts raping"
     },
     {
       "user": "minso",
@@ -41,6 +35,42 @@
       "title": "delete me i dont care wwe ww",
       "author": "William",
       "content": "wewe"
+    },
+    {
+      "user": "administrator",
+      "title": "bryan",
+      "author": "bryan",
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "IUABGFGFF",
+      "author": "dww",
+      "content": "wdeesevvv"
+    },
+    {
+      "user": "administrator",
+      "title": "bryan22",
+      "author": "bryan",
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "bryan999",
+      "author": "bryan",
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "Bread Virginity",
+      "author": "Duckling",
+      "content": "My little duckling's first taste of bread"
+    },
+    {
+      "user": "Wadmin",
+      "title": "hello world adding workeded",
+      "author": "Gemini Uranises",
+      "content": "world contentwe"
     }
   ]
 }

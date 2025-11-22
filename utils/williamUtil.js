@@ -1,36 +1,30 @@
-const { Book } = require('../models/book');
+// William's responsibility: PUT (edit/update), DELETE books
+
 const fs = require('fs').promises;
 const path = require('path');
 
-// path to the stored books file
-const BOOK_FILE = path.join('utils', 'books.json');
+const BOOK_FILE = path.join(__dirname, 'books.json');
+const TEMPLATE_FILE = path.join(__dirname, 'books.template.json');
 
-// tracks timestamps of delete attempts
 let deleteTimestamps = [];
 let locked = false;
 
-// -----------------
-// checks if delete functionality is currently locked due to spamming
-// -----------------
+
+// rate limit check for DELETE
 function spamGuardActive() {
   return locked;
 }
 
-// -----------------
-// registers a delete attempt and activates rate limiting if more than five delete attempts occur within 5 seconds
-// -----------------
+
+// register delete attempt
 function registerDeleteAttempt() {
   const now = Date.now();
   deleteTimestamps.push(now);
-
-  // remove timestamps older than 10 seconds
   deleteTimestamps = deleteTimestamps.filter(t => now - t <= 10000);
 
-  // activate lock if more than five attempts occurred within 10 seconds
-  if (deleteTimestamps.length >= 5 && !locked) {
+  // if 5 successful deletes in 10s, lock the delete button for 25s
+  if (deleteTimestamps.length >= 4 && !locked) {
     locked = true;
-
-    // unlock the delete button again after thirty seconds
     setTimeout(() => {
       locked = false;
       deleteTimestamps = [];
@@ -38,94 +32,86 @@ function registerDeleteAttempt() {
   }
 }
 
-// -----------------
-// delete book by searching for a title match in the JSON file
-// -----------------
-async function performDelete(title) {
+// read books from JSON file
+async function readBooksFile() {
   try {
-    // read and parse the book file
-    const raw = await fs.readFile(BOOK_FILE, "utf-8");
-    const data = JSON.parse(raw);
-
-    // track book count prior to deletion
-    const beforeCount = data.books.length;
-
-    // filter out the matching book(s)
-    data.books = data.books.filter(b => b.title !== title);
-
-    // register attempt for rate limiting purposes
-    registerDeleteAttempt();
-
-    // If count remains unchanged, the requested book was not found
-    if (data.books.length === beforeCount) {
-      return { deleted: false };
+    const raw = await fs.readFile(BOOK_FILE, 'utf8');
+    return JSON.parse(raw);
+  } catch (e) {
+    // fallback template
+    try {
+      const tpl = await fs.readFile(TEMPLATE_FILE, 'utf8');
+      await fs.writeFile(BOOK_FILE, tpl, 'utf8');
+      return JSON.parse(tpl);
+    } catch {
+      await fs.writeFile(BOOK_FILE, JSON.stringify({ books: [] }, null, 2), 'utf8');
+      return { books: [] };
     }
-
-    // Write the updated book list back to the file
-    await fs.writeFile(BOOK_FILE, JSON.stringify(data, null, 2));
-
-    return { deleted: true };
-
-  } catch (err) {
-    // Log file system or JSON operation errors
-    console.error("performDelete error:", err);
-    throw err;
   }
 }
 
-// -----------------
-// wrapper function to handle request/response for deleting books
-// -----------------
+
+// write books to JSON file
+async function writeBooksFile(data) {
+  await fs.writeFile(BOOK_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+
+// DELETE /books?title=...
 async function deleteBook(req, res) {
   try {
-    // check if delete lock is active (rate limit triggered)
-    if (spamGuardActive()) {
-      return res.status(429).json({
-        success: false,
-        message: "Do not spam: wait 30s"
-      });
-    }
+    if (spamGuardActive()) return res.status(429).json({ success: false, message: "Do not spam: wait 30s" });
 
-    // extract book title from URL query
     const { title } = req.query;
+    if (!title) return res.status(400).json({ success: false, message: "missing parameter: title" });
 
-    // validation: if no title param provided
-    if (!title) {
-      return res.status(400).json({
-        success: false,
-        message: "missing parameter: title"
-      });
-    }
+    const data = await readBooksFile();
+    const beforeCount = data.books.length;
+    data.books = data.books.filter(b => b.title !== title);
+    registerDeleteAttempt();
 
-    // actually perform the delete operation
-    const result = await performDelete(title);
+    if (data.books.length === beforeCount) return res.status(404).json({ success: false, message: "book not found" });
 
-    // book not found case
-    if (!result.deleted) {
-      return res.status(404).json({
-        success: false,
-        message: "book not found"
-      });
-    }
-
-    // success response
-    return res.status(200).json({
-      success: true,
-      message: "book successfully deleted"
-    });
-
+    await writeBooksFile(data);
+    return res.status(200).json({ success: true, message: "book successfully deleted" });
   } catch (err) {
-    // log error msg for backend errors
     console.error("deleteBook error:", err);
-    return res.status(500).json({
-      success: false,
-      message: "something went wrong — try again later"
-    });
+    return res.status(500).json({ success: false, message: "something went wrong — try again later" });
+  }
+}
+
+// PUT /books/:title
+// body: { title, author, content }
+async function updateBook(req, res) {
+  try {
+    const originalTitle = req.params.title;
+    const { title, author, content } = req.body;
+
+    if (!originalTitle || !title || !author || !content) {
+      return res.status(400).json({ error: 'original title, title, author, content required' });
+    }
+
+    const data = await readBooksFile();
+    data.books = data.books || [];
+
+    const idx = data.books.findIndex(b => b.title === originalTitle);
+    if (idx === -1) return res.status(404).json({ error: 'Book not found' });
+
+    data.books[idx] = { ...data.books[idx], title, author, content };
+    await writeBooksFile(data);
+
+    res.json({ message: 'Book updated', book: data.books[idx] });
+  } catch (e) {
+    console.error('updateBook error', e);
+    res.status(500).json({ error: 'Failed to update book' });
   }
 }
 
 module.exports = {
-    performDelete, 
-    spamGuardActive, 
-    deleteBook
+  readBooksFile,
+  writeBooksFile,
+  spamGuardActive,
+  registerDeleteAttempt,
+  deleteBook,
+  updateBook
 };
