@@ -1,10 +1,76 @@
 {
   "books": [
     {
+      "user": "brya",
+      "title": "Slim Shady 2.0",
+      "author": "MnM",
+      "content": "bryannnnn starts raping"
+    },
+    {
+      "user": "minso",
+      "title": "Minso's Book",
+      "author": "Minso",
+      "content": "Content of Minso's book."
+    },
+    {
+      "user": "test",
+      "title": "Test Book",
+      "author": "Test Author",
+      "content": "This is a test book."
+    },
+    {
+      "user": "new",
+      "title": "New User's Book",
+      "author": "New User",
+      "content": "Content for the new user's book."
+    },
+    {
+      "user": "Wadmin",
+      "title": "William's Book 3",
+      "author": "William Admin",
+      "content": "Content of William's book."
+    },
+    {
+      "user": "Wadmin",
+      "title": "delete me i dont care wwe ww",
+      "author": "William",
+      "content": "wewe"
+    },
+    {
       "user": "administrator",
-      "title": "bryan's famous book of bread",
+      "title": "bryan",
       "author": "bryan",
-      "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique recusandae consectetur optio fuga molestiae consequuntur, aliquam eveniet mollitia doloremque quia. Dolorum fugiat est hic ab fugit laborum qui amet? Magni?"
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "IUABGFGFF",
+      "author": "dww",
+      "content": "wdeesevvv"
+    },
+    {
+      "user": "administrator",
+      "title": "bryan22",
+      "author": "bryan",
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "bryan999",
+      "author": "bryan",
+      "content": "bryannnnn"
+    },
+    {
+      "user": "administrator",
+      "title": "Bread Virginity",
+      "author": "Duckling",
+      "content": "My little duckling's first taste of bread"
+    },
+    {
+      "user": "Wadmin",
+      "title": "hello world adding workeded",
+      "author": "Gemini Uranises",
+      "content": "world contentwe"
     }
   ]
 }

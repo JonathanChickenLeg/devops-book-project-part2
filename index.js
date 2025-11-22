@@ -15,21 +15,24 @@ app.get("/retrieve-users", retrieveUsers);
 const { addUser } = require("./utils/jonathanUtil");
 app.post("/add-user", addUser);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/" + startPage);
+
+const { deleteBook, updateBook } = require('./utils/williamUtil')
+app.delete('/delete-book', deleteBook)
+app.put('/books/:title', updateBook)
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + "/public/" + startPage);
 });
 
 const {
   getBooks,
   addBook,
-  updateBook,
-  deleteBook,
 } = require("./utils/bryanUtil");
 
 app.get("/books", getBooks);
 app.post("/books", addBook);
-app.put("/books/:title", updateBook);
-app.delete("/books/:title", deleteBook);
+
+
 
 server = app.listen(PORT, function () {
   const address = server.address();
