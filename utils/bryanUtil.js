@@ -1,5 +1,5 @@
 // utils/bryanUtil.js
-// Bryan's responsibility: GET books, POST (add new books)
+// Bryan's responsibility: POST (add new books)
 // never touch edits/deletes
 
 const fs = require('fs').promises;

@@ -47,18 +47,6 @@ const res = await fetch("/retrieve-users", {
             console.log("Username available");
 
 pls dont make changes in already working files
-- login.js
-- jonathan.js
-- retrieveUserUtil.js
-- jonathanUtil.js
-- book.js
-- user.js
-
-remove unused commented out codes to hide the fact that we fked up our stuff
-
-remove sussy comments from chatgpt or github copilot for obv reasons ***IMPORTANT***
-
-remove stuff in this readme that gives away that we are using ai to code once we are done lol ***IMPORTANT***
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
