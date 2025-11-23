@@ -1,5 +1,6 @@
 # JSON data files
-utils/data.json
+utils/users.json
+utils/books.json
 
 # Node.js dependencies
 node_modules/
