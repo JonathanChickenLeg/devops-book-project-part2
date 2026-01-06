@@ -9,6 +9,11 @@
       "username": "test",
       "password": "test",
       "role": "user"
+    },
+    {
+      "username": "API Test user",
+      "password": "password123",
+      "role": "user"
     }
   ]
 }

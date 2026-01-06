@@ -5,7 +5,7 @@
   "main": "index.js",
   "directories": {
     "doc": "docs",
-    "test": "tests"
+    "test": "tests --verbose"
   },
   "scripts": {
     "test": "jest"
@@ -26,6 +26,7 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "supertest": "^7.1.4"
   }
 }
