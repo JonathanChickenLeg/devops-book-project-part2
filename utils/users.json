@@ -1,22 +1,17 @@
 {
   "users": [
     {
-      "username": "administrator",
-      "password": "administrator",
-      "role": "admin"
-    },
-    {
-      "username": "test",
-      "password": "test",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
+      "username": "user-webkit",
       "password": "password123",
       "role": "user"
     },
     {
-      "username": "API Test user",
+      "username": "user-chromium",
+      "password": "password123",
+      "role": "user"
+    },
+    {
+      "username": "user-firefox",
       "password": "password123",
       "role": "user"
     }
