@@ -12,14 +12,21 @@ describe('Library Management API', () => {
         // Backup current users.json so we can restore after error-case test
         try {
             usersBackup = fs.readFileSync(usersFile, 'utf8');
-        } catch {}
+        } catch { }
     });
 
     afterAll(() => {
         // Restore original users.json if we modified it
         try {
             if (usersBackup !== undefined) fs.writeFileSync(usersFile, usersBackup, 'utf8');
-        } catch {}
+        } catch { }
+    });
+
+    it('GET / should serve the app homepage (index.html)', async () => {
+        const res = await request(app).get('/');
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toMatch(/html/);
+        expect(res.text).toContain('Library Book System');
     });
 
     it('GET /retrieve-users should return users list', async () => {
@@ -44,7 +51,7 @@ describe('Library Management API', () => {
         expect(res.body.some(r => r.username === newUser.username)).toBe(true);
     });
 
-        it('GET /retrieve-users should include newly added user', async () => {
+    it('GET /retrieve-users should include newly added user', async () => {
         const uniqueName = 'API Test re-retrieve ' + Date.now();
         const postRes = await request(app).post('/add-user').send({ username: uniqueName, password: 'pw' });
         expect(postRes.status).toBe(201);

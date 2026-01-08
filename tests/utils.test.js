@@ -69,6 +69,79 @@ describe('Unit Tests for Utils', () => {
                 expect.objectContaining({ message: expect.any(String) })
             );
         });
+
+        it('Initializes from template when users.json is missing (ENOENT)', async () => {
+            const enoent = Object.assign(new Error('no such file'), { code: 'ENOENT' });
+            // First read of users.json fails with ENOENT
+            fs.readFile
+                .mockRejectedValueOnce(enoent)
+                // Read of users.template.json succeeds and returns a users array
+                .mockResolvedValueOnce(JSON.stringify({ users: [{ username: 'TemplateUser', password: 'pw', role: 'user' }] }));
+            fs.writeFile.mockResolvedValue();
+
+            const req = { body: { username: 'NewFromTemplate', password: 'pw2', role: 'user' } };
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+
+            await addUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(201);
+            const users = res.json.mock.calls[0][0];
+            expect(Array.isArray(users)).toBe(true);
+            expect(users.some(u => u.username === 'NewFromTemplate')).toBe(true);
+            expect(fs.writeFile).toHaveBeenCalled();
+        });
+
+        it('Handles users.json as a bare array (no users key)', async () => {
+            fs.readFile.mockResolvedValueOnce(
+                JSON.stringify([{ username: 'Existing', password: 'pw', role: 'user' }])
+            );
+            fs.writeFile.mockResolvedValue();
+
+            const req = { body: { username: 'NewBare', password: 'pw2', role: 'user' } };
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+
+            await addUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(201);
+            const users = res.json.mock.calls[0][0];
+            expect(users).toHaveLength(2);
+            const added = users[1];
+            expect(added.username).toBe('NewBare');
+            expect(added.role).toBe('user');
+            expect(fs.writeFile).toHaveBeenCalledTimes(1);
+        });
+
+        it('Treats object without users property as empty list', async () => {
+            fs.readFile.mockResolvedValueOnce(JSON.stringify({ somethingElse: true }));
+            fs.writeFile.mockResolvedValue();
+
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+            await addUser({ body: { username: 'First', password: 'pw' } }, res);
+
+            expect(res.status).toHaveBeenCalledWith(201);
+            const users = res.json.mock.calls[0][0];
+            expect(Array.isArray(users)).toBe(true);
+            expect(users).toHaveLength(1);
+            expect(users[0].username).toBe('First');
+        });
+
+        it('Initializes from template when ENOENT and template is a bare array', async () => {
+            const enoent = Object.assign(new Error('no such file'), { code: 'ENOENT' });
+            fs.readFile
+                .mockRejectedValueOnce(enoent) // users.json missing
+                .mockResolvedValueOnce(JSON.stringify([{ username: 'TplA', password: 'pw', role: 'user' }])); // template
+            fs.writeFile.mockResolvedValue();
+
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+            await addUser({ body: { username: 'AfterTpl', password: 'pw' } }, res);
+
+            expect(res.status).toHaveBeenCalledWith(201);
+            const users = res.json.mock.calls[0][0];
+            expect(users.some(u => u.username === 'TplA')).toBe(true);
+            expect(users.some(u => u.username === 'AfterTpl')).toBe(true);
+            // Expect two writes: initialize and final save
+            expect(fs.writeFile).toHaveBeenCalledTimes(2);
+        });
     });
 
     describe('retrieveUsers', () => {
@@ -93,6 +166,17 @@ describe('Unit Tests for Utils', () => {
             expect(res.json).toHaveBeenCalledWith(
                 expect.objectContaining({ message: expect.any(String) })
             );
+        });
+
+        it('Returns empty list when users.json is missing (ENOENT)', async () => {
+            const enoent = Object.assign(new Error('no such file'), { code: 'ENOENT' });
+            fs.readFile.mockRejectedValueOnce(enoent);
+
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+            await retrieveUsers({}, res);
+
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith([]);
         });
     });
 });
