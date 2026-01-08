@@ -1,52 +1,7 @@
 {
   "users": [
     {
-      "username": "user-webkit",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "user-chromium",
-      "password": "password123",
-      "role": "user"
-    },
-    {
       "username": "user-firefox",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
-      "password": "password123",
-      "role": "user"
-    },
-    {
-      "username": "API Test user",
       "password": "password123",
       "role": "user"
     }
