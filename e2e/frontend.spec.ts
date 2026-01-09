@@ -14,6 +14,11 @@ test.beforeAll(async () => {
   await fs.writeFile(USER_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
   console.log('users.json initialized for browsers:', browsers.join(', '));
 });
+
+// Ensure users.json is restored to an empty users array after tests
+test.afterAll(async () => {
+  await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
+});
 test.describe('Add User Frontend Tests', () => {
   test('Successful Registration', async ({ page, browserName }) => {
     await page.goto(BASE_URL);
