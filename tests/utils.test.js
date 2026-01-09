@@ -142,6 +142,28 @@ describe('Unit Tests for Utils', () => {
             // Expect two writes: initialize and final save
             expect(fs.writeFile).toHaveBeenCalledTimes(2);
         });
+
+        it("Initializes from template when ENOENT and template is empty", async () => {
+            const enoent = Object.assign(new Error('no such file'), { code: 'ENOENT' });
+            // First, users.json read fails with ENOENT, then template read returns empty string
+            fs.readFile
+                .mockRejectedValueOnce(enoent)
+                .mockResolvedValueOnce('');
+            fs.writeFile.mockResolvedValue();
+
+            const req = { body: { username: 'OnlyFromEmptyTpl', password: 'pw', role: 'user' } };
+            const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+
+            await addUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(201);
+            const users = res.json.mock.calls[0][0];
+            expect(Array.isArray(users)).toBe(true);
+            expect(users).toHaveLength(1);
+            expect(users[0].username).toBe('OnlyFromEmptyTpl');
+            // two writes: initialize file with empty users and then save with new user
+            expect(fs.writeFile).toHaveBeenCalledTimes(2);
+        });
     });
 
     describe('retrieveUsers', () => {
