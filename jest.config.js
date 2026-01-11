@@ -27,7 +27,6 @@ module.exports = {
             lines: 80, // minimum 80% of lines covered
             statements: 80, // minimum 80% of statements covered
         },
-        // Enforce higher coverage on critical utility
         './utils/jonathanUtil.js': {
             branches: 90,
             functions: 90,

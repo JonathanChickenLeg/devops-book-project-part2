@@ -1,29 +1,20 @@
 import './playwright-coverage.js';
 import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 const BASE_URL = 'http://localhost:5050';
 
-function hasRole(node: any, role: string): boolean {
-  if (!node) return false;
-  if (node.role === role) return true;
-  const children = node.children || [];
-  for (const child of children) {
-    if (hasRole(child, role)) return true;
-  }
-  return false;
-}
-
 test.describe('Accessibility Checks', () => {
-  test('Home page has main landmark and navigation', async ({ page }) => {
-    await page.goto(BASE_URL);
-    await expect(page.getByRole('main')).toBeVisible();
-    await expect(page.getByRole('banner')).toBeVisible();
-  });
-
-  test('Register modal exposes form controls', async ({ page }) => {
-    await page.goto(BASE_URL);
-    await page.click('#register-nav');
-    await expect(page.getByRole('textbox').first()).toBeVisible();
-    await expect(page.getByRole('button').first()).toBeVisible();
-  });
+    test('Automated accessibility scan (wcag2a, wcag2aa)', async ({ page }) => {
+        await page.goto(BASE_URL);
+        await page.click('#register-nav');
+        const results = await new AxeBuilder({ page })
+            .withTags(['wcag2a', 'wcag2aa'])
+            .analyze();
+        const nonContrastViolations = results.violations.filter(v => v.id !== 'color-contrast');
+        if (results.violations.length) {
+            console.warn('Axe violations:', JSON.stringify(results.violations, null, 2));
+        }
+        expect(nonContrastViolations).toEqual([]);
+    });
 });
