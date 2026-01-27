@@ -16,11 +16,11 @@ export default defineConfig({
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!(process.env.CI || process.env.JENKINS_HOME),
+  forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: (process.env.CI || process.env.JENKINS_HOME) ? 2 : 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: (process.env.CI || process.env.JENKINS_HOME) ? 1 : undefined,
+  workers: process.env.CI ? 8 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -76,8 +76,6 @@ export default defineConfig({
     command: 'node index.js',
     url: 'http://localhost:5050',
     env: { NODE_ENV: 'test', PORT: '5050' },
-    // Prefer reusing an already running server to avoid port conflicts when
-    // other test stages (like Jest) may have started the app in CI.
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
   },
 });
