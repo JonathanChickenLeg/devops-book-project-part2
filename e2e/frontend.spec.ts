@@ -15,8 +15,9 @@ test.beforeAll(async () => {
 test.describe('Add User Frontend Tests', () => {
   test('Successful Registration', async ({ page, browserName }) => {
     await page.goto(BASE_URL);
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 20000 });
     const userName = `user-${browserName}`;
     // Open modal
     await page.click('#register-nav');
@@ -56,8 +57,9 @@ test.describe('Add User Frontend Tests', () => {
 
   test('Missing username shows alert', async ({ page }) => {
     await page.goto(BASE_URL);
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 20000 });
     await page.click('#register-nav');
     await expect(page.locator('#register-section')).toBeVisible();
     await page.fill('#reg-username', '');
@@ -70,8 +72,9 @@ test.describe('Add User Frontend Tests', () => {
 
   test('Missing password shows alert', async ({ page }) => {
     await page.goto(BASE_URL);
-    await page.waitForLoadState('domcontentloaded');
-    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 20000 });
     await page.click('#register-nav');
     await expect(page.locator('#register-section')).toBeVisible();
     await page.fill('#reg-username', 'someone');
@@ -92,6 +95,9 @@ test.describe('Add User Frontend Tests', () => {
       });
     });
     await page.goto(BASE_URL);
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 20000 });
     await page.click('#register-nav');
     await page.fill('#reg-username', 'dup');
     await page.fill('#reg-password', 'pw');
@@ -108,6 +114,9 @@ test.describe('Add User Frontend Tests', () => {
     await page.route('**/retrieve-users', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ users: [] }) }));
     await page.route('**/add-user', route => route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ message: 'Failed to create user' }) }));
     await page.goto(BASE_URL);
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 20000 });
     await page.click('#register-nav');
     await page.fill('#reg-username', 'e2e-backend-error');
     await page.fill('#reg-password', 'pw');
