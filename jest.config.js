@@ -33,5 +33,11 @@ module.exports = {
             lines: 90,
             statements: 90,
         },
+        './index.js': {
+            branches: 60,
+            functions: 40,
+            lines: 90,
+            statements: 90,
+        },
     },
 };
