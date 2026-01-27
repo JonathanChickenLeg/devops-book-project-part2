@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
+var path = require('path');
 
 const PORT = process.env.PORT || 5050;
 var startPage = "index.html";
@@ -9,11 +10,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + "/public/" + startPage);
+  const indexPath = path.join(__dirname, 'public', startPage);
+  res.sendFile(indexPath);
 });
 
 // Static assets
-app.use(express.static("./public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const { retrieveUsers } = require("./utils/retrieveUserUtil");
 app.get("/retrieve-users", retrieveUsers);
