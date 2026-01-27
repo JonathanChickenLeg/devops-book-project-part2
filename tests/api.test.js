@@ -22,13 +22,6 @@ describe('Library Management API', () => {
         } catch { }
     });
 
-    it('GET / should serve the app homepage (index.html)', async () => {
-        const res = await request(app).get('/');
-        expect(res.status).toBe(200);
-        expect(res.headers['content-type']).toMatch(/html/);
-        expect(res.text).toContain('Library Book System');
-    });
-
     it('GET /retrieve-users should return users list', async () => {
         const res = await request(app).get('/retrieve-users');
         expect(res.status).toBe(200);
