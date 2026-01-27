@@ -5,28 +5,17 @@ var path = require('path');
 
 const PORT = process.env.PORT || 5050;
 var startPage = "index.html";
-const PUBLIC_DIR = path.join(__dirname, 'public');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  const indexPath = path.join(PUBLIC_DIR, startPage);
-  res.sendFile(indexPath, (err) => {
-    if (!err) return;
-    // If index.html is missing in CI (e.g., Jenkins), serve a minimal fallback
-    console.error('Failed to serve index.html:', err.code || err.message);
-    res
-      .status(200)
-      .type('html')
-      .send(
-        '<!doctype html><html><head><title>Library Book System</title></head><body><main><h1>Library Book System</h1></main></body></html>'
-      );
-  });
+  const indexPath = path.join(__dirname, 'public', startPage);
+  res.sendFile(indexPath);
 });
 
 // Static assets
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const { retrieveUsers } = require("./utils/retrieveUserUtil");
 app.get("/retrieve-users", retrieveUsers);
