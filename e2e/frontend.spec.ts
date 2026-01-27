@@ -2,16 +2,14 @@ import './playwright-coverage.js'
 import { test, expect } from '@playwright/test';
 import fs from 'fs/promises';
 import path from 'path';
-import config from '../playwright.config';
 const BASE_URL = 'http://localhost:5050';
 const USER_FILE = path.join(__dirname, '../utils/users.json');
 
 test.beforeAll(async () => {
-  const projects: { name: string }[] = (config as any).projects ?? [];
-  const browsers: string[] = projects.map(p => p.name);
-  const initialData = browsers.flatMap((browserName: string) => [
-  ]);
-  await fs.writeFile(USER_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
+  // Avoid importing TS config for speed; mirror current project names
+  const browsers: string[] = ['chromium', 'firefox', 'webkit'];
+  // Initialize with expected object shape to prevent extra conversions
+  await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
   console.log('users.json initialized for browsers:', browsers.join(', '));
 });
 
