@@ -75,6 +75,7 @@ export default defineConfig({
   webServer: {
     command: 'node index.js',
     url: 'http://localhost:5050',
+    env: { NODE_ENV: 'test', PORT: '5050' },
     reuseExistingServer: !process.env.CI,
   },
 });
