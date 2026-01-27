@@ -8,12 +8,12 @@ var startPage = "index.html";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Static assets
+app.use(express.static("./public"));
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/" + startPage);
 });
-
-// Static assets
-app.use(express.static("./public"));
 
 const { retrieveUsers } = require("./utils/retrieveUserUtil");
 app.get("/retrieve-users", retrieveUsers);
@@ -35,9 +35,8 @@ app.get("/books", getBooks);
 
 server = app.listen(PORT, function () {
   const address = server.address();
-  const baseUrl = `http://${
-    address.address == "::" ? "localhost" : address.address
-  }:${address.port}`;
+  const baseUrl = `http://${address.address == "::" ? "localhost" : address.address
+    }:${address.port}`;
   console.log(`Demo project at: ${baseUrl}`);
 });
 
