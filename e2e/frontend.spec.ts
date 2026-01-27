@@ -12,59 +12,75 @@ test.beforeAll(async () => {
   await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
   console.log('users.json initialized for browsers:', browsers.join(', '));
 });
-
-// Ensure users.json is restored to an empty users array after tests
-test.afterAll(async () => {
-  await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
-});
 test.describe('Add User Frontend Tests', () => {
   test('Successful Registration', async ({ page, browserName }) => {
     await page.goto(BASE_URL);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
     const userName = `user-${browserName}`;
     // Open modal
     await page.click('#register-nav');
     // Fill form
     await page.fill('#reg-username', userName);
     await page.fill('#reg-password', 'password123');
+    // Ensure clean state for duplicate check
+    await page.route('**/retrieve-users', route => {
+      route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ users: [] }) });
+    });
     // Submit the new resource
     await page.click('#register-btn');
     // Wait for modal to close
-    await page.waitForSelector('#register-section', { state: 'hidden', timeout: 100000 });
+    await page.waitForSelector('#register-section', { state: 'hidden', timeout: 10000 });
+    // Prepare login: return the just-created user
+    await page.unroute('**/retrieve-users');
+    await page.route('**/retrieve-users', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ users: [{ username: userName, password: 'password123', role: 'user' }] })
+      });
+    });
     // Fill form
     await page.fill('#lgn-username', userName);
     await page.fill('#lgn-password', 'password123');
 
     await page.click('#login-btn');
     // Wait for successful login
-    await page.waitForSelector('#library-section', { timeout: 100000 });
+    await expect(page.locator('#library-section')).toBeVisible({ timeout: 10000 });
     // Wait for the new row in the table
     const name = page.locator('#current-user', { hasText: userName });
     await name.waitFor({ state: 'visible', timeout: 10000 });
     // Assert it is visible
     await expect(name).toBeVisible();
   });
-  
+
   test('Missing username shows alert', async ({ page }) => {
     await page.goto(BASE_URL);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
     await page.click('#register-nav');
+    await expect(page.locator('#register-section')).toBeVisible();
     await page.fill('#reg-username', '');
-    await page.click('#register-btn')
-    page.once('dialog', dialog => {
-      expect(dialog.message()).toBe('Enter a username')
-      dialog.accept();
+    page.once('dialog', async dialog => {
+      expect(dialog.message()).toBe('Enter a username');
+      await dialog.accept();
     });
+    await page.click('#register-btn');
   });
 
   test('Missing password shows alert', async ({ page }) => {
     await page.goto(BASE_URL);
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
     await page.click('#register-nav');
+    await expect(page.locator('#register-section')).toBeVisible();
     await page.fill('#reg-username', 'someone');
     await page.fill('#reg-password', '');
-    await page.click('#register-btn')
-    page.once('dialog', dialog => {
-      expect(dialog.message()).toBe('Enter a password')
-      dialog.accept();
+    page.once('dialog', async dialog => {
+      expect(dialog.message()).toBe('Enter a password');
+      await dialog.accept();
     });
+    await page.click('#register-btn');
   });
 
   test('Duplicate username shows alert', async ({ page }) => {
@@ -104,4 +120,8 @@ test.describe('Add User Frontend Tests', () => {
     await page.unroute('**/retrieve-users');
     await page.unroute('**/add-user');
   });
+});
+// Ensure users.json is restored to an empty users array after tests
+test.afterAll(async () => {
+  await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
 });

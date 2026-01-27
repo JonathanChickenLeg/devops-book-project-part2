@@ -7,6 +7,8 @@ const BASE_URL = 'http://localhost:5050';
 test.describe('Accessibility Checks', () => {
     test('Automated accessibility scan (wcag2a, wcag2aa)', async ({ page }) => {
         await page.goto(BASE_URL);
+        await page.waitForLoadState('domcontentloaded');
+        await page.waitForSelector('#register-nav', { state: 'visible', timeout: 15000 });
         await page.click('#register-nav');
         const results = await new AxeBuilder({ page })
             .withTags(['wcag2a', 'wcag2aa'])
