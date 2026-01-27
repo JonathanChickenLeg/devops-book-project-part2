@@ -1,6 +1,5 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-const path = require('path');
 var app = express();
 
 const PORT = process.env.PORT || 5050;
@@ -14,12 +13,7 @@ app.get('/', (req, res) => {
 });
 
 // Static assets
-// app.use(express.static("./public"));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html')); // absolute path
-});
+app.use(express.static("./public"));
 
 const { retrieveUsers } = require("./utils/retrieveUserUtil");
 app.get("/retrieve-users", retrieveUsers);

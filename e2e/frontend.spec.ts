@@ -11,7 +11,7 @@ test.beforeAll(async () => {
   const browsers: string[] = projects.map(p => p.name);
   const initialData = browsers.flatMap((browserName: string) => [
   ]);
-  await fs.writeFile(USER_FILE, JSON.stringify({ users: [] }, null, 2), 'utf-8');
+  await fs.writeFile(USER_FILE, JSON.stringify(initialData, null, 2), 'utf-8');
   console.log('users.json initialized for browsers:', browsers.join(', '));
 });
 
@@ -38,7 +38,10 @@ test.describe('Add User Frontend Tests', () => {
 
     await page.click('#login-btn');
     // Wait for successful login
-    await page.waitForSelector('#library-section', { timeout: 100000 });
+
+    // await page.waitForSelector('#library-section', { timeout: 100000 });
+    await expect(page.locator('#library-section')).toBeVisible({ timeout: 10000 });
+    
     // Wait for the new row in the table
     const name = page.locator('#current-user', { hasText: userName });
     await name.waitFor({ state: 'visible', timeout: 10000 });

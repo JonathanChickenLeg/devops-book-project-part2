@@ -20,7 +20,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 8 : undefined,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -75,7 +75,6 @@ export default defineConfig({
   webServer: {
     command: 'node index.js',
     url: 'http://localhost:5050',
-    env: { NODE_ENV: 'test', PORT: '5050' },
     reuseExistingServer: !process.env.CI,
   },
 });
