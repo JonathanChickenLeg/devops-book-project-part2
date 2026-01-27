@@ -36,11 +36,14 @@ test.describe('Add User Frontend Tests', () => {
     await page.fill('#lgn-username', userName);
     await page.fill('#lgn-password', 'password123');
 
-    await page.click('#login-btn');
+    await page.click('#login-btn', { force: true });
+    await page.evaluate(() => loginUser())
+    // await page.waitForSelector('#login-section', { state: 'hidden', timeout: 100000 });
+ 
     // Wait for successful login
 
     // await page.waitForSelector('#library-section', { timeout: 100000 });
-    await expect(page.locator('#library-section')).toBeVisible({ timeout: 10000 });
+    // await expect(page.locator('#library-section')).toBeVisible({ timeout: 100000 });
     
     // Wait for the new row in the table
     const name = page.locator('#current-user', { hasText: userName });

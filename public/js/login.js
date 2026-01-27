@@ -1,3 +1,4 @@
+window.loginUser = loginUser;
 async function loginUser() {
   const username = document.getElementById("lgn-username").value.trim();
   const password = document.getElementById("lgn-password").value.trim();
@@ -31,6 +32,7 @@ async function loginUser() {
     const currentUser = { username: user.username, role: user.role };
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     showLib(currentUser);
+    return currentUser;
   } catch (err) {
     console.error("Error fetching users:", err);
     alert("Unable to reach server");
