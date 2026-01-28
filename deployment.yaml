@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: lib-mgmt # Name of the container
-          image: lib-mgmt-app # Docker image to use for the container
+          image: lib-mgmt-app:{{BUILD_NUMBER}} # Docker image to use for the container
           imagePullPolicy: Never
           ports:
             - containerPort: 5050 # Port that the container exposes
