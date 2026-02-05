@@ -1,0 +1,55 @@
+name: Library Management System CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # --- Step 1 & 2: Install and Test ---
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: |
+        npm test
+        npm run test-frontend
+
+    # --- Step 3: Start Minikube ---
+    - name: Start Minikube
+      uses: medyagh/setup-minikube@latest
+      with:
+        driver: docker
+        # Adding ports as you did in your Jenkins command
+        start-args: '--ports=127.0.0.1:30080:30080'
+
+    # --- Step 4: Build and Load Image ---
+    - name: Build Docker Image
+      run: |
+        docker build -t lib-mgmt-app:${{ github.run_number }} .
+        minikube image load lib-mgmt-app:${{ github.run_number }}
+
+    # --- Step 5: Deploy to Minikube ---
+    - name: Deploy to Kubernetes
+      run: |
+        # Use sed to replace the placeholder with the actual build number
+        sed -i 's/{{BUILD_NUMBER}}/${{ github.run_number }}/g' deployment.yaml
+        
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        
+        # Check status (matches your Jenkins steps)
+        kubectl get pods
+        kubectl get services
