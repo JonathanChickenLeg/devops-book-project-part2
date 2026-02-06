@@ -18,7 +18,7 @@ jobs:
         node-version: '20'
         cache: 'npm'
 
-    # --- Step 1 & 2: Install and Test ---
+    # Install dependencies and run tests
     - name: Install dependencies
       run: npm install
 
@@ -30,21 +30,19 @@ jobs:
         npm test
         npm run test-frontend
 
-    # --- Step 3: Start Minikube ---
+    # Start Minikube for deployment
     - name: Start Minikube
       uses: medyagh/setup-minikube@latest
       with:
         driver: docker
-        # Adding ports as you did in your Jenkins command
         start-args: '--ports=127.0.0.1:30080:30080'
 
-    # --- Step 4: Build and Load Image ---
+    # Build and load Docker image into Minikube
     - name: Build Docker Image
       run: |
         docker build -t lib-mgmt-app:${{ github.run_number }} .
         minikube image load lib-mgmt-app:${{ github.run_number }}
 
-    # --- Step 5: Deploy to Minikube ---
     - name: Deploy to Kubernetes
       run: |
         # Use sed to replace the placeholder with the actual build number
